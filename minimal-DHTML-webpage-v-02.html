@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+
+<title> Coursework 2 - Music Player </title>
+
+<style>
+
+#song{
+    position:relative;
+    margin:0 10px 0 10px;
+    width:100%;
+    height:100%;
+
+}
+
+html {
+    font-family: "Open Sans", sans-serif !important;
+    color: white;
+    background-color: #232323;
+
+}
+
+body {
+    overflow:hidden;
+ }
+
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    max-width: 100%;
+}
+
+
+div.Outer{
+    border:1px solid #000000;
+    margin: 0.5% auto;
+    width: 99%;
+    height: 60vh;
+    padding-top: 20px;
+    background-color: #3b3b3b;
+    
+}
+
+div.Content {
+    border: 1px solid transparent;
+    color:black;
+    margin: auto;
+    width: 95%;
+    height: 99%;
+    font-family:"Helvetica Neue" , sans-serif;
+    display: flex;
+    justify-content: space-between;
+    background-color: transparent;
+}
+
+div.albumList {
+    border: 1px solid #ffffff;
+    height: 87%;
+    width: 100%;
+    bottom: 0;
+    margin: auto;
+    overflow: auto;
+    background-color: #e6e6e6;
+    text-align: center;
+
+}
+
+div.songList {
+    border: 1px solid #ffffff;
+    height: 87%;
+    width: 100%;
+    bottom: 0;
+    margin: auto;
+    overflow: auto;
+    flex-grow: 1;
+    background-color: #e6e6e6;
+    text-align: center;
+  
+}
+
+div.detailsContainer {
+    width: 100%;
+    height: 87%;
+    border: 1px solid #ffffff;
+    background-color: #e6e6e6;
+    margin:auto;
+    text-align: center;
+}
+
+
+input.listButton {
+    height: 30px;
+    width: 100%;
+    text-align: left;
+    font-size: 20px;
+    padding: 0 0 0 5px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    overflow: hidden;
+}
+
+img.artwork {
+    height: 20vh;
+    width: 20vh;
+}
+
+
+div.keyboardContainer1 {
+    border:none;
+    height: 35%;
+    width: 97%;
+    margin: 0 auto;
+}
+
+div.keyboardContainer2 {
+    border: 1px solid white;
+    height: 94%;
+    width: 60%;
+    background-color: #000e4e;
+    margin: 0 auto;
+}
+
+div.keyboardContainer {
+    border: none;
+    height: 90%;
+    width: 100%;
+    margin: 0 auto;
+}
+
+div.keyboardRow {
+    text-align: center;
+    height: 25%;
+}
+
+input.keyboardButton {
+    width: 5%;
+    color: #c10007;
+    font-family: "Helvetica Neue", sans-serif;
+    font-size: 1.5vmax;
+    outline: none;
+    border: none;
+}
+
+input.space {
+    height: 90%;
+    width: 50%;
+    font-family: "Helvetica Neue", sans-serif;
+    font-size: 1.5vmax;
+    color: #ffffff;
+    outline: none;
+    border: none;
+}
+
+input.backspace {
+    height: 90%;
+    width: 10%;
+    font-family: "Helvetica Neue", sans-serif;
+    font-size: 1.5vmax;
+    color: #ffffff;
+    outline: none;
+    border: none;
+}
+
+input.clear {
+    height: 90%;
+    width: 10%;
+    font-family: "Helvetica Neue", sans-serif;
+    font-size: 1.5vmax;
+    color: #ffffff;
+    outline: none;
+    border: none;
+}
+
+input.searchBox {
+    width: 60%;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-family: "Helvetica Neue", sans-serif;
+    font-size: 25px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="Outer" class="Outer">
+    <div id="Content" class="Content">
+        <div id="Album" class="Content">
+            <div id="albumList" class="albumList">
+                  <h2>  Album </h2>
+                <table id="albumTable">
+                </table>
+            </div>
+            <div id="song" class="Content">
+                <div id="songList" class="songList">
+                    <h2 id="songArtist" style="visibility: hidden;">*Artist*</h2>
+                    <h3 id="songAlbum" style="visibility: hidden;">*Album*</h3>
+                    <table id="tracksTable">
+                    </table>
+                </div>
+            </div>
+            <div id="detailsContainer" class="detailsContainer">
+                <div class="detailsContainer1" style="visibility: hidden">
+                    <img id="artworkImg" class="artwork">
+                    <h2 id="detailsArtist" style="margin-left: 5px;">*Artist*</h2>
+                    <h3 id="detailsAlbum" style="margin-left: 5px;">*Album*</h3> 
+                </div>
+                <div class="detailsContainer2" style="visibility: hidden">
+                    <audio controls="controls" id="musicControl" onended="SongEnd()" style="width: auto; margin-left: 5px; margin-right: 5px">
+                        <source id="audioSource" src="" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                        </audio>
+                        <h4 style="margin-left: 5px;">Track:</h4>
+                        <h3 id="detailsTrack" style="margin-left: 5px; margin-bottom: 2px;">*Track*</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="keyboardContainer1" class="keyboardContainer1">
+        <div id="keyboardContainer2" class="keyboardContainer2">
+            <div id="keyboardContainer" class="keyboardContainer">
+                <div class="keyboardRow">
+                    <input id="searchBar" type="text" readonly="readonly" class="searchBox">
+                </div>
+                <div style="height: 2px"></div>
+                <div class="keyboardRow">
+                    <input type="button" value="Q" class="keyboardButton">
+                    <input type="button" value="W" class="keyboardButton">
+                    <input type="button" value="E" class="keyboardButton">
+                    <input type="button" value="R" class="keyboardButton">
+                    <input type="button" value="T" class="keyboardButton">
+                    <input type="button" value="Y" class="keyboardButton">
+                    <input type="button" value="U" class="keyboardButton">
+                    <input type="button" value="I" class="keyboardButton">
+                    <input type="button" value="O" class="keyboardButton">
+                    <input type="button" value="P" class="keyboardButton">
+                </div>
+                <div class="keyboardRow">
+                    <input type="button" value="A" class="keyboardButton">
+                    <input type="button" value="S" class="keyboardButton">
+                    <input type="button" value="D" class="keyboardButton">
+                    <input type="button" value="F" class="keyboardButton">
+                    <input type="button" value="G" class="keyboardButton">
+                    <input type="button" value="H" class="keyboardButton">
+                    <input type="button" value="J" class="keyboardButton">
+                    <input type="button" value="K" class="keyboardButton">
+                    <input type="button" value="L" class="keyboardButton">
+                </div>
+                <div class="keyboardRow">
+                    <input type="button" value="Z" class="keyboardButton">
+                    <input type="button" value="X" class="keyboardButton">
+                    <input type="button" value="C" class="keyboardButton">
+                    <input type="button" value="V" class="keyboardButton">
+                    <input type="button" value="B" class="keyboardButton">
+                    <input type="button" value="N" class="keyboardButton">
+                    <input type="button" value="M" class="keyboardButton">
+                </div>
+                <div class="keyboardRow">
+                    <input id="clear" type="button" value="clear" class="clear">
+                    <input id="space" type="button" value="space" class="space">
+                    <input id="backspace" type="button" value="&larr;" class="backspace">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+<script src="music.js"></script>
+<script>
+
+
+
+//--------------------------------------------------JAVASCRIPT CODING-------------------------------------------------------
+
+var selectedAlbum;
+var selectedTrackName;
+var playingSongIndexes = {albumIndex: 6, trackIndex: 0};
+
+window.onload = function (){
+    initializeKeyboard();
+    updateContent();
+};
+
+// ---------------------------------------------------ON SCREEN KEYBOARD-----------------------------------------------------
+
+function initializeKeyboard() {                   // this function is used to initialse keyboard colours when clicked
+    const keyColours = {
+        hoverBackground: '#85bbff', offBackground: 'white', downBackground: '#4c6199',
+        hoverForeground: 'black', offForeground: 'black', downForeground: 'white'
+    };
+    var searchBar = document.getElementById("searchBar");
+
+    KeyBoard();
+    AlphaKeys(searchBar);
+    BackSpace(searchBar);
+    ClearKey(searchBar);
+
+    function KeyBoard() {                              //this function is to assign all keys into the searchbar when selected
+        var key = document.querySelectorAll(".keyboardButton, .clear, .space, .backspace");
+        for (var i = 0; i < key.length; i++) {
+            key[i].style.color = keyColours.offForeground;
+            key[i].style.backgroundColor = keyColours.offBackground;
+            key[i].onmouseup = function () {
+                this.style.color = keyColours.hoverForeground;
+                this.style.backgroundColor = keyColours.hoverBackground;
+            };
+            key[i].onmousedown = function () {
+                this.style.color = keyColours.downForeground;
+                this.style.backgroundColor = keyColours.downBackground;
+            };
+            key[i].onmouseenter = function () {
+                this.style.color = keyColours.hoverForeground;
+                this.style.backgroundColor = keyColours.hoverBackground;
+
+            };
+            key[i].onmouseleave = function () {
+                this.style.color = keyColours.offForeground;
+                this.style.backgroundColor = keyColours.offBackground;
+            };
+
+
+        }
+    }
+
+    function AlphaKeys(searchBar) {                                              //assign each alphabet to be selected and enter in the search bar
+        var alphaKey = document.querySelectorAll(".keyboardButton, .space");
+        for (var i = 0; i < alphaKey.length; i++) {
+            alphaKey[i].onclick = function () {
+                searchBar.value += this.value;
+                if (searchBar.value !== "" && searchBar.value.length !== 1) {
+                    onTextChange()
+                }
+            };
+        }
+    }
+
+    function BackSpace(searchBar) {                                                // the search bar length decreases by 1
+        var backSpace = document.getElementById("backspace");
+        backSpace.onclick = function () {
+            searchBar.value = searchBar.value.substr(0, searchBar.value.length - 1);
+            onTextChange()
+        };
+    }
+
+    function ClearKey(searchBar) {                                     // the search bar gets cleared
+        var clearKey = document.getElementById("clear");
+        clearKey.onclick = function () {
+            searchBar.value = "";
+            onTextChange();
+        };
+    }
+
+    function onTextChange() {
+        updateContent();
+    }
+}
+
+//--------------------------------------------------ALBUM-------------------------------------------------------
+
+function updateContent() {                              // assign colours when the cursor is off and on the buttons
+    const buttonColours = {onButton: "#85bbff", offSelected: "#ffffff", offNonSelected: ""};
+
+    updateAlbums();
+    var albumIndex=albums.indexOf(selectedAlbum);
+    if (albumIndex!==-1){
+        updateTracks(albumIndex);
+    }
+
+    function updateAlbums() {                                // to update albums in a table and create buttons to link with second panel
+        var table = document.getElementById("albumTable");
+        table.innerHTML = "";
+
+        for (var i=0;i<albums.length;i++) {
+            if (!albumMatchesSearchBar(albums[i])) continue;
+
+            var tr=document.createElement("tr");
+            var td=document.createElement("td");
+            var button=document.createElement("input");
+
+            DefaultButtonProperties(button);
+
+            button.value=albums[i].artist + " - "+ albums[i].title;         // this is how each element is assigned to be visible
+            button.setAttribute("data-albumIndex", i.toString());
+            if (selectedAlbum === albums[i]) {
+                button.style.backgroundColor=buttonColours.offSelected;
+                button.setAttribute("data-selected", "true");
+            }
+            button.onclick = function () {                            // button on being single clicked
+                var albumIndex = parseInt(this.getAttribute("data-albumIndex"));
+                deselectOtherButtons(table, this);
+                this.setAttribute("data-selected", "true");
+
+                if (selectedAlbum !== albums[albumIndex]){
+                    selectedTrackName = "";
+                }
+                selectedAlbum = albums[albumIndex];
+                updateTracks(this.getAttribute("data-albumIndex"));
+            };
+            button.ondblclick = function () {                              // button on being double clicked
+                var albumIndex = parseInt(this.getAttribute("data-albumIndex"));
+                var trackIndex = selectTrackButton(0);
+                setPlayingSongIndexes(parseInt(albumIndex), parseInt(trackIndex));
+                updateAudioPlayer();
+                console.log(playingSongIndexes)
+            };
+
+            addedButton = td.appendChild(button);
+            tr.appendChild(td);
+            table.appendChild(tr);
+        }
+
+        function albumMatchesSearchBar(album) {
+            var searchBar = document.getElementById("searchBar");
+            var searchValue = searchBar.value;
+            if (searchValue === "" || searchValue.length === 1) return true;          //if the searched value contains a key
+
+            var matches = false;
+
+            for (var i = 0; i < album.tracks.length; i++) {                                // for loop made to search in lyrics and tracks
+                var lyrics = album.tracks[i].lyrics;
+                var title = album.tracks[i].title;
+                if (lyrics.toUpperCase().indexOf(searchValue.toUpperCase()) >= 0 ||
+                    title.toUpperCase().indexOf(searchValue.toUpperCase()) >= 0) {
+                    matches = true;                                                       // true if search bar result is found
+                }
+            }
+
+            return matches;
+        }
+
+
+
+
+        //------------------------------------------------TRACKS--------------------------------------------------------------
+
+        function selectTrackButton(trackNumber) {                                  // assign track button and return its index
+            var table = document.getElementById("tracksTable");
+            var button = table.rows[trackNumber].cells[0].childNodes[0];
+            selectedTrackName = button.getAttribute("data-track");
+            return parseInt(button.getAttribute("data-trackIndex"));
+        }
+    }
+
+    function updateTracks(albumIndex) {
+        var album=selectedAlbum;
+        if (album===null) return;
+        var table=document.getElementById("tracksTable");
+
+        makeDetailVisible(album);
+        table.innerHTML = "";
+        var songAdded = false;
+        for (var i=0;i<album.tracks.length;i++) {            // loop to add tracks of a selected album
+            if (!songMatchesSearchBar(album.tracks[i].lyrics,album.tracks[i].title)) continue;
+            songAdded = true;
+            var tr = document.createElement("tr");
+            var td = document.createElement("td");
+            var button = document.createElement("input");
+
+            DefaultButtonProperties(button);                           // button properties assigned to buttons
+            button.value = album.tracks[i].title;
+            button.setAttribute("data-albumIndex", albumIndex.toString());
+            button.setAttribute("data-trackIndex", i.toString());
+
+            if (selectedTrackName===album.tracks[i].title) {
+                button.style.backgroundColor = buttonColours.offSelected;
+                button.setAttribute("data-selected", "true");
+            }
+
+            button.onclick = function () {
+                var albumIndex = parseInt(this.getAttribute("data-albumIndex"));
+                var trackIndex = parseInt(this.getAttribute("data-trackIndex"));
+                deselectOtherButtons(table, this);
+                this.setAttribute("data-selected", "true");
+                selectedTrackName = albums[albumIndex].tracks[trackIndex].title;
+            };
+
+            button.ondblclick = function () {
+                var albumIndex = this.getAttribute("data-albumIndex");
+                var trackIndex = this.getAttribute("data-trackIndex");
+                setPlayingSongIndexes(parseInt(albumIndex), parseInt(trackIndex));
+                updateAudioPlayer(albumIndex, trackIndex);
+            };
+
+            var addedButton = td.appendChild(button);
+            tr.appendChild(td);
+            table.appendChild(tr);
+
+        }
+        if (!songAdded) {
+            document.getElementById("tracksTable").innerHTML = "";
+            hideSongs();
+        }
+
+        function makeDetailVisible(album) {                   // make detail pane visible when an album is chosen
+            var artistHeader = document.getElementById("songArtist");
+            var albumHeader = document.getElementById("songAlbum");
+            artistHeader.innerHTML = album.artist;
+            artistHeader.style.visibility = "visible";
+            albumHeader.innerHTML = album.title;
+            albumHeader.style.visibility = "visible";
+        }
+
+        function hideSongs() {                                    // hide songs until a track is chosen
+            var artistHeader = document.getElementById("songArtist");
+            var albumHeader = document.getElementById("songAlbum");
+            artistHeader.style.visibility = "hidden";
+            albumHeader.style.visibility = "hidden";
+        }
+
+        function songMatchesSearchBar(lyrics, trackName) {
+            var searchValue = document.getElementById("searchBar").value;
+
+            lyrics = lyrics.toUpperCase();
+            trackName = trackName.toUpperCase();
+            searchValue = searchValue.toUpperCase();
+            if (searchValue === "" || searchValue.length === 1) return true;  // if search value is same as song name , song name is returned
+            return (lyrics.indexOf(searchValue) >= 0 || trackName.indexOf(searchValue) >= 0);
+        }
+
+
+    }
+
+    function setPlayingSongIndexes(albumIndex, trackIndex){       //album and track indexes are set to make loops easier
+        playingSongIndexes.albumIndex = parseInt(albumIndex);
+        playingSongIndexes.trackIndex = parseInt(trackIndex);
+    }
+
+    function DefaultButtonProperties(button) {                   // button properties assigned for tracks list
+        button.type = "button";
+        button.className = "listButton";
+        button.setAttribute("data-selected", "false");
+
+        button.onmouseenter = function () {
+            this.style.backgroundColor = buttonColours.onButton;
+        };
+        button.onmouseleave = function () {
+            if (this.getAttribute("data-selected") === "true") {
+                this.style.backgroundColor = buttonColours.offSelected;
+            }
+            else {
+                this.style.backgroundColor = buttonColours.offNonSelected;
+            }
+        };
+
+    }
+
+    function deselectOtherButtons(table,mainButton) {                         // to deselect rest buttons
+        for (var i=0; i<table.rows.length; i++) {
+            var button = table.rows[i].cells[0].children[0];
+            if (button!==mainButton) {
+                button.setAttribute("data-selected", "false");
+                button.style.backgroundColor = buttonColours.offNonSelected;
+            }
+        }
+    }
+}
+
+function updateAudioPlayer() {                        // song details are visible and functions related to songs are called
+    var divs = document.querySelectorAll(".detailsContainer1, .detailsContainer2");
+    console.log(divs);
+    for (var i=0; i<divs.length;i++) {
+        divs[i].style.visibility="visible";
+    }
+
+    var albumIndex = playingSongIndexes.albumIndex;
+    var trackIndex = playingSongIndexes.trackIndex;
+    setPlayingTrackDetails(albumIndex, trackIndex);
+    setAudio(albumIndex, trackIndex);
+    setArtwork(albumIndex);
+    play();
+
+    function setPlayingTrackDetails(albumIndex, trackIndex) {                      // assigning track details
+        var albumHeader = document.getElementById("detailsAlbum");
+        var artistHeader = document.getElementById("detailsArtist");
+        var trackHeader = document.getElementById("detailsTrack");
+        var album = albums[albumIndex];
+        var track = album.tracks[trackIndex];
+        albumHeader.innerHTML = album.title;
+        artistHeader.innerHTML = album.artist;
+        trackHeader.innerHTML = track.title;
+    }
+
+    function setAudio(albumIndex, trackIndex) {        //setting audio controls of each song
+        var album = albums[albumIndex];
+        var audioSource = document.getElementById("audioSource");
+        audioSource.src="audio/" + album.artist + "/" + album.title + "/"
+        + albums[albumIndex].tracks[trackIndex].mp3;
+    }
+
+    function play() {                                              //play song
+        var audioPlayer = document.getElementById("musicControl");
+        audioPlayer.load();
+        audioPlayer.play();
+    }
+
+    function setArtwork(albumIndex) {
+        var artwork = document.getElementById("artworkImg");
+        var imageName = albums[albumIndex].artwork;
+        artwork.src = "artwork/" + imageName + ".jpg";
+    }
+}
+
+function SongEnd() {
+    playNextSong();
+
+    function playNextSong() {                 // moves to next track index
+        var length = albums[playingSongIndexes.albumIndex].tracks.length;
+
+        if (playingSongIndexes.trackIndex===length - 1){
+            playingSongIndexes.trackIndex=0;
+        }
+        else {
+            playingSongIndexes.trackIndex++;
+        }
+
+        updateAudioPlayer();
+    }
+}
+
+
+</script>
+</body>
+</html>
